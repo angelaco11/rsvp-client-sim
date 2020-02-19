@@ -3,16 +3,29 @@ package com.afcooney.rsvpclientsim.model;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A class that takes a list of Point objects to be traversed
+ */
+
 public class PointsHolder {
 
-    private List<Point> points = new ArrayList<>();
+    private List<Point> points;
     private int i = 0;
     private Direction direction = Direction.UP;
 
+    /**
+     * Constructor for PointsHolder Class
+     * @param points - the list of points given by a resource
+     */
     public PointsHolder(List<Point> points) {
         this.points = points;
     }
 
+    /**
+     * Given a list Point objects that contain longitude and latitude values,
+     * traverses the list of points one at a time back and forth
+     * @return point - the next point in the traversal of the given points list
+     */
     public Point getNextPoint(){
         Point point = null;
 

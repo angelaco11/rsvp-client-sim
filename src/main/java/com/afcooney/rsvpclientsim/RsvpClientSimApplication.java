@@ -11,7 +11,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.io.*;
-import java.lang.instrument.ClassDefinition;
 import java.lang.reflect.Type;
 import java.util.*;
 
@@ -23,31 +22,22 @@ public class RsvpClientSimApplication implements CommandLineRunner {
 	}
 
 	@Override
-	public void run(String... args) throws Exception {
+	public void run(String... args) {
 		if (args.length == 2) {
 			String resourceDataFile = args[0];
 			String serverURL = args[1];
 
-			//String putResponse = put(fullURL, resources.get(0).getTags());
-
-			//System.out.println(putResponse);
-
-			// Make a PUT request every interval, passing the whole array of strings, using a point from the points array.
-
-            // UPDATE THE SAME TAGS AT EVERY INTERVAL WITH LOOPING LAT/LONG VALUES
+			// Loops through each resource, updating the same tags at a given interval with looping latitude and
+			// longitude values
             readResourceData(resourceDataFile)
                     .forEach(resource -> {
                         putAtInterval(resource, serverURL);
                     });
 
 		} else {
-			System.out.println("You do not have the correct number of arguments. Please enter a path to JSON file containing tags," +
-					"path to JSON file containing coordinates, an integer representing the interval in seconds, and the server URL " +
-					" as a string respectively. ");
+			System.out.println("You do not have the correct number of arguments. Please enter a path to a JSON file " +
+					"containing resources and the server URL as a string respectively. ");
 		}
-
-		//To run this application from the command line,
-		//use: mvn spring-boot:run -Dspring-boot.run.arguments=this_is_an_argument,this_is_too
 	}
 
 	/**
@@ -114,8 +104,9 @@ public class RsvpClientSimApplication implements CommandLineRunner {
 	}
 
     /**
-     * Makes a put request
-     * @param resource
+     * Makes a PUT request at a given resource's interval with a resource's points
+     * @param resource - The resource that contains the tags to be passed to the PUT request
+	 * @param serverURL - The URL to pass to the PUT request
      */
 	public static void putAtInterval(Resource resource, String serverURL) {
         TimerTask task = new TimerTask() {
@@ -125,8 +116,13 @@ public class RsvpClientSimApplication implements CommandLineRunner {
                 String fullURL = buildURL(serverURL, point);
                 System.out.println("LAT: " + point.getLatitude() + " LONG: " + point.getLongitude());
                 System.out.println("URL: " + fullURL);
-                // String putResponse = put(fullURL, resource.getTags());
-                // System.out.println(putResponse);
+				String putResponse = null;
+				try {
+					putResponse = put(fullURL, resource.getTags());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				System.out.println(putResponse);
             }
         };
         new Timer().scheduleAtFixedRate(task, 0,
