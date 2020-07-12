@@ -7,19 +7,9 @@ import java.util.HashMap;
  */
 
 public class UrlBuilder {
-    private boolean isHttps = false;
     private String root;
     private String path;
     private HashMap<String, String> queryParams = new HashMap<>();
-
-    /**
-     * Adds an "https" string value to the URL Builder
-     * @return UrlBuilder
-     */
-    public UrlBuilder isHttps(){
-        this.isHttps = true;
-        return this;
-    }
 
     /**
      * Adds a root server url value to the URL Builder
@@ -69,8 +59,7 @@ public class UrlBuilder {
      * @return the string url
      */
     public String build() {
-        String url = isHttps ? "https://" : "http://";
-        url = url + root + path;
+        String url = root + path;
         url = this.queryParams.isEmpty() ? url : url + "?";
         int index = 0;
         for (String key : this.queryParams.keySet()) {
