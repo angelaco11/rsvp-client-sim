@@ -8,8 +8,10 @@ import com.google.gson.reflect.TypeToken;
 import okhttp3.*;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
@@ -41,7 +43,8 @@ public class SimService {
         List<Resource> resources = new ArrayList<>();
 
         try {
-            Path path = Paths.get(resourceDataFilePath);
+            File file = new ClassPathResource(resourceDataFilePath).getFile();
+            Path path = file.toPath();
             List<String> allLines = Files.readAllLines(path);
 
             String fileString = String.join("", allLines);
