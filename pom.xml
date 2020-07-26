@@ -72,6 +72,16 @@
                     <target>11</target>
                 </configuration>
             </plugin>
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>0.9.10</version>
+				<configuration>
+					<to>
+						<image>registry.hub.docker.com/trentcrace/rsvp-client-sim</image>
+					</to>
+				</configuration>
+			</plugin>
         </plugins>
 	</build>
 
