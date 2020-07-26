@@ -42,7 +42,9 @@ public class SimService {
 
         try {
             Path path = Paths.get(resourceDataFilePath);
-            String fileString = Files.readString(path);
+            List<String> allLines = Files.readAllLines(path);
+
+            String fileString = String.join("", allLines);
 
             Type listType = new TypeToken<List<Resource>>(){}.getType();
             resources = new Gson().fromJson(fileString, listType);
